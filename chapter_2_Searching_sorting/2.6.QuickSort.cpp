@@ -21,43 +21,30 @@ bool isSorted(int a[], int n)
     return true;
 }
 
-void merge1(int a[], int left, int mid, int right)
+int Partition(int a[], int left, int right)
 {
-    int n1 = mid-left+1, n2 = right-mid;
-    int L[n1+1], R[n2+1];
-
-    for (int i = 1; i <= n1; i++)
-        L[i] = a[left+i];
-    for (int i = 1; i <= n2; i++)
-        R[i] = a[mid+1+i];
-    int i = 1, j = 1, k = left;
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j])
-            a[k] = L[i++];
-        else
-            a[k] = R[j++];
-        ++k;
-    }
-    while (i < n1)
-        a[k++] = L[i++];
-    while (j < n2)
-        a[k++] = R[j++];
+   int pivot = a[right], pivot_index = left-1;
+   for (int i = left; i < right; ++i)
+       if (a[i] <= pivot)
+            swap(a[++pivot_index], a[i]);
+   swap(a[right], a[pivot_index+1]);
+   return pivot_index+1;
 }
 
-void mergeSort(int a[], int left, int right)
+void quickSort(int a[], int left, int right)
 {
     if (left >= right)
         return;
-    int mid = left + (right-left)/2;
-    mergeSort(a, left, mid);
-    mergeSort(a, mid+1, right);
-    merge1(a, left, mid, right);
+    int mid = Partition(a, left, right);
+    quickSort(a, left, mid-1);
+    quickSort(a, mid+1, right);
+
 }
+
 int main()
 {
     string s;
-    ofstream f("Merge_sort_report.OUTPUT");
+    ofstream f("Quick_sort_report.OUTPUT");
     for (int i = 1; i <= 6; ++i)
     {
         s = "array"+to_string(i)+".txt";
@@ -70,7 +57,7 @@ int main()
             cout << "Array is unsorted\n";
         }
         clock_t st = clock();
-            mergeSort(a, n);
+            quickSort(a, 1, n);
         clock_t en = clock();
         if (isSorted(a,n))
         {

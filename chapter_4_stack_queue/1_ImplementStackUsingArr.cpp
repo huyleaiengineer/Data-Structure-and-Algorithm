@@ -1,5 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+
+struct Stack{
+
+};
+
 void menu();
 
 int main()

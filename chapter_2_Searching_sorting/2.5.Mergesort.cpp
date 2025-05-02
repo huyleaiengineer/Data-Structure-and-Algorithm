@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int a[1'000'001], n;
-
+int a[1'000'003], n;
+int L[1'000'003], R[1'000'003];
 
 void readFile(string s)
 {
@@ -23,37 +23,22 @@ bool isSorted(int a[], int n)
 
 void merge1(int a[], int left, int mid, int right)
 {
-    int n1 = mid-left+1, n2 = right-mid;
+   int n1 = mid-left+1, n2 = right-mid;
 
-    int L[n1+1], R[n2+1];
-
-    for (int i = 1; i <= n1; i++)
-        L[i] = a[left+i];
-    for (int i = 1; i <= n2; i++)
-        R[i] = a[mid+1+i];
-    int i = 1, j = 1, k = left;
-    while (i < n1 && j < n2)
-    {
-        if (L[i] <= R[j]){
-            a[k] = L[i];
-            ++i;
-        }
-        else{
-            a[k] = R[j];
-            ++j;
-        }
-        ++k;
-    }
-    while (i <= n1){
-        a[k] = L[i];
-        ++i;
-        ++k;
-    }
-    while (j <= n2){
-        a[k] = R[j];
-        ++j;
-        ++k;
-    }
+   for (int i = 1; i <= n1; ++i)
+    L[i] = a[left+i-1];
+   for (int i = 1; i <= n2; ++i)
+    R[i] = a[mid+i];
+   L[n1+1] = INT_MAX;
+   R[n2+1] = INT_MAX;
+   int i = 1, j = 1;
+   for (int k = left; k <= right; ++k)
+   {
+       if (L[i] <= R[j])
+        a[k] = L[i++];
+       else
+        a[k] = R[j++];
+   }
 }
 
 void mergeSort(int a[], int left, int right)
@@ -76,7 +61,7 @@ int main()
 {
     string s;
     ofstream f("Merge_sort_report.OUTPUT");
-    for (int i = 1; i <= 1; ++i)
+    for (int i = 1; i <= 6; ++i)
     {
         s = "array"+to_string(i)+".txt";
         readFile(s);
@@ -96,7 +81,7 @@ int main()
         }else{
             cout << "Array is unsorted\n";
         }
-        show(a, n);
+        //show(a, n);
 
         cout << "Time = " << (en-st) << " ms\n";
         f << i << ". n = " << n << '\n';
