@@ -3,45 +3,43 @@ using namespace std;
 #define MAX 200
 
 struct Stack{
-    int a[MAX], top, N=MAX-1;
+    int key;
+    Stack *next;
+    Stack (): key(0), next(nullptr){}
 };
 
-void StackInitialize(Stack &S)
+
+bool isEmpty(Stack *S)
 {
-    S.top = 0;
+    return S->key==0 && S->next == nullptr;
 }
 
-bool isEmpty(Stack S)
+
+void Push(Stack *&S, int key)
 {
-    return S.top == 0;
+    Stack *p = new Stack();
+    p->key = key;
+    p->next = S;
+    S = p;
 }
 
-bool isFull(Stack S)
+int Pop(Stack *&S)
 {
-    return S.top == S.N;
-}
-
-void Push(Stack &S, int key)
-{
-    if (isFull(S))
-        cout << "Overflow\n";
-    else{
-        S.a[++S.top] = key;
-    }
-}
-
-int Pop(Stack &S)
-{
+    int x;
     if (isEmpty(S))
     {
         cout << "underflow\n";
         return -1;
     }else{
-        return S.a[S.top--];
+        Stack *p = S;
+        S = p->next;
+        x = p->key;
+        //delete p;
+        return x;
     }
 }
 
-void showStack(Stack s)
+void showStack(Stack *s)
 {
     while (!isEmpty(s))
     {
@@ -62,7 +60,7 @@ void menu()
 {
     bool flag = true;
     int key;
-    Stack S;
+    Stack *S;
     while(flag)
     {
         cout << "LIST OF OPERATION\n";
@@ -76,7 +74,8 @@ void menu()
         switch(opt)
         {
             case 1:{
-                StackInitialize(S);
+                S = new Stack();
+                //StackInitialize(S);
                 break;
             }
             case 2:{
